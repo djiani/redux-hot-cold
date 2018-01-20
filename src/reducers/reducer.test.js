@@ -2,13 +2,13 @@ import {reducer} from './index';
 import {restartGame, makeGuess, generateAuralUpdate} from '../actions';
 
 describe('reducer', () => {
-  const correctAnswer = 50;
+  let correctAnswer = 50;
   let feedback = 'Make your guess!';
   let  guesses = [];
   let auralStatus: '';
 
   it('should set the initial state', ()=>{
-    const state = reducer(undefined, {type: '__UNKNOWN'});
+    let state = reducer(undefined, {type: '__UNKNOWN'});
     expect(state.guesses).toEqual([]);
     expect(state.feedback).toEqual('Make your guess!');
     expect(state.auralStatus).toEqual('');
@@ -47,12 +47,12 @@ describe('reducer', () => {
         expect(state.correctAnswer).toEqual(90);
 
         state = reducer(state, makeGuess(85));
-        expect(state.guesses).toEqual([10, 60, 80])
+        expect(state.guesses).toEqual([10, 60, 80, 85])
         expect(state.feedback).toEqual("You're Hot!");
         expect(state.correctAnswer).toEqual(90);
 
         state = reducer(state, makeGuess(90));
-        expect(state.guesses).toEqual([10, 60, 80, 90])
+        expect(state.guesses).toEqual([10, 60, 80, 85, 90])
         expect(state.feedback).toEqual('You got it!');
         expect(state.correctAnswer).toEqual(90);
       })
@@ -60,15 +60,19 @@ describe('reducer', () => {
 
     describe('generateAuralUpdate', ()=>{
       it('should generate auralStatus', ()=>{
-        let state;
-        state = reducer(state, makeGuess(10));
-        state = reducer(state, makeGuess(45));
+        let state={
+          guesses:[10, 60, 80],
+          feedback: "You're Hot!",
+          auralStatus: '',
+          correctAnswer: 90
+        }
         state = reducer(state, generateAuralUpdate());
-        const auralStatusResp = "Here's the status of the game right now: You're Hot!"+"You've made 2 guesses "+
-        "In order of most- to least-recent, they are: 45, 10";
-        expect(state.auralStatus).toEqual('auralStatusResp');
+        const auralStatusResp = "Here's the status of the game right now: You're Hot!"+" You've made 3 guesses. "+
+        "In order of most- to least-recent, they are: 80, 60, 10";
+        expect(state.auralStatus).toEqual(auralStatusResp);
       })
     })
+
 
     describe('restartGame', ()=>{
       it('should reset the game', ()=>{
