@@ -8,4 +8,5 @@ describe('<Feedback />', () => {
     it('Renders without crashing', () => {
         shallow(<Feedback />);
     });
+    
 });

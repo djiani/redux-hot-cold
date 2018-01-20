@@ -7,7 +7,7 @@ const initialState = {
     correctAnswer: Math.round(Math.random() * 100) + 1
 };
 
-export default reducer = (state = initialState, action) => {
+export const reducer = (state = initialState, action) => {
     if (action.type === RESTART_GAME) {
         return Object.assign({}, state, {
             guesses: [],
